@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the manuscript and the archived release."
+title: "Cell-state conditioning predicts the expression response to an unseen stimulus but not stimulus-dependent genetic effects"
+abstract: "Analysis code and archived per-gene prediction tables for an independent evaluation of AlphaGenome 2 cell-state conditioning."
+type: software
+authors:
+  - family-names: He
+    given-names: Haodong
+  - family-names: Sun
+    given-names: Jianxuan
+  - family-names: Xu
+    given-names: Jingyu
+  - family-names: Abudureyimu
+    given-names: Maimaiti
+  - family-names: Yang
+    given-names: Yuxuan
+  - family-names: Huang
+    given-names: Yifan
+  - family-names: Wang
+    given-names: Zhihua
+  - family-names: Xia
+    given-names: Qidong
+  - family-names: Wang
+    given-names: Shaogang
+repository-code: "https://github.com/hhdgit0149/alphagenome2-conditioning-evaluation"
+url: "https://github.com/hhdgit0149/alphagenome2-conditioning-evaluation"
+license: MIT
+version: 1.0.0
+date-released: 2026-11-16
+keywords:
+  - AlphaGenome
+  - cell-state conditioning
+  - eQTL
+  - reproducibility
