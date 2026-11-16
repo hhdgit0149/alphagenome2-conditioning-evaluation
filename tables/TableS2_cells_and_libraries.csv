@@ -1,0 +1,19 @@
+Column,Role,Cells used,Library (counts),UMI per cell,Cells excluded,Note
+ctrl|CD14+ Monocytes,x axis (CPM),2785,6192051,2223.4,0,all singlet cells of this type; conditioning cells not excluded
+ctrl|CD4 T cells,x axis (CPM),5161,6131014,1188.0,0,all singlet cells of this type; conditioning cells not excluded
+ctrl|CD8 T cells,x axis (CPM),1082,1069128,988.1,0,all singlet cells of this type; conditioning cells not excluded
+ctrl|NK cells,x axis (CPM),916,828937,905.0,0,all singlet cells of this type; conditioning cells not excluded
+ctrl|B cells,x axis (CPM),1307,1630847,1247.8,0,all singlet cells of this type; conditioning cells not excluded
+ctrl|Dendritic cells,x axis (CPM),203,690676,3402.3,0,all singlet cells of this type; conditioning cells not excluded
+ctrl|Megakaryocytes,x axis (CPM),122,205612,1685.3,0,all singlet cells of this type; conditioning cells not excluded
+ctrl|FCGR3A+ Monocytes,x axis (CPM),739,1838222,2487.4,0,all singlet cells of this type; conditioning cells not excluded
+"obs|ctrl (CD14, disjoint)",y axis (observed response),2529,5634862,2228.1,256,excluding the 256 conditioning cells from this library
+stim|CD14+ Monocytes,x axis (CPM),2590,6374141,2461.1,0,all singlet cells of this type; conditioning cells not excluded
+stim|CD4 T cells,x axis (CPM),5195,6613779,1273.1,0,all singlet cells of this type; conditioning cells not excluded
+stim|CD8 T cells,x axis (CPM),957,1041106,1087.9,0,all singlet cells of this type; conditioning cells not excluded
+stim|NK cells,x axis (CPM),1067,1071317,1004.0,0,all singlet cells of this type; conditioning cells not excluded
+stim|B cells,x axis (CPM),1256,1649925,1313.6,0,all singlet cells of this type; conditioning cells not excluded
+stim|Dendritic cells,x axis (CPM),228,723162,3171.8,0,all singlet cells of this type; conditioning cells not excluded
+stim|Megakaryocytes,x axis (CPM),134,213542,1593.6,0,all singlet cells of this type; conditioning cells not excluded
+stim|FCGR3A+ Monocytes,x axis (CPM),852,2228640,2615.8,0,all singlet cells of this type; conditioning cells not excluded
+"obs|stim (CD14, disjoint)",y axis (observed response),2334,5762086,2468.8,256,excluding the 256 conditioning cells from this library

@@ -1,0 +1,21 @@
+Dataset,Items in table,Keyword list,Keyword group,Hits,Hits adjudicated as a real perturbation
+AlphaGenome 1 (reference tracks),4430,broad (independent),stimulus / cytokine,3,0
+AlphaGenome 1 (reference tracks),4430,broad (independent),glucocorticoid,0,0
+AlphaGenome 1 (reference tracks),4430,broad (independent),hormone,0,0
+AlphaGenome 1 (reference tracks),4430,broad (independent),activated state label,44,0
+AlphaGenome 1 (reference tracks),4430,broad (independent),prostate,57,0
+AlphaGenome 1 (reference tracks),4430,narrow (this study),stimulus / cytokine,0,0
+AlphaGenome 1 (reference tracks),4430,narrow (this study),glucocorticoid,0,0
+AlphaGenome 1 (reference tracks),4430,narrow (this study),hormone,0,0
+AlphaGenome 1 (reference tracks),4430,narrow (this study),activated state label,0,0
+AlphaGenome 1 (reference tracks),4430,narrow (this study),prostate,43,0
+AlphaGenome 2 (built-in conditions),2799,broad (independent),stimulus / cytokine,4,0
+AlphaGenome 2 (built-in conditions),2799,broad (independent),glucocorticoid,0,0
+AlphaGenome 2 (built-in conditions),2799,broad (independent),hormone,2,0
+AlphaGenome 2 (built-in conditions),2799,broad (independent),activated state label,136,0
+AlphaGenome 2 (built-in conditions),2799,broad (independent),prostate,23,0
+AlphaGenome 2 (built-in conditions),2799,narrow (this study),stimulus / cytokine,0,0
+AlphaGenome 2 (built-in conditions),2799,narrow (this study),glucocorticoid,0,0
+AlphaGenome 2 (built-in conditions),2799,narrow (this study),hormone,0,0
+AlphaGenome 2 (built-in conditions),2799,narrow (this study),activated state label,30,0
+AlphaGenome 2 (built-in conditions),2799,narrow (this study),prostate,19,0

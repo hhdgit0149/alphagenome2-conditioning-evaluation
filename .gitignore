@@ -1,0 +1,30 @@
+# data (large, third-party)
+b_data/
+eqtl_cache/
+mpra/
+dex/
+*.h5ad
+*.mtx
+*.mtx.gz
+*.barcodes.tsv.gz
+*.tsv.gz
+*.b.b.txt
+*.zip
+
+# outputs and logs
+*.log
+*_pred_*.csv
+noise_splits_*.csv
+calibration_*.csv
+!tables/*.csv
+manifest.json
+
+# python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+
+# editors
+.vscode/
+.DS_Store

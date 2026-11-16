@@ -1,0 +1,19 @@
+column,role,cells_used,library_counts,umi_per_cell,excluded,note
+ctrl|CD14+ Monocytes,x 轴（CPM）,2785,6192051,2223.4,0,该类型全部 singlet，不排除条件侧
+ctrl|CD4 T cells,x 轴（CPM）,5161,6131014,1188.0,0,该类型全部 singlet，不排除条件侧
+ctrl|CD8 T cells,x 轴（CPM）,1082,1069128,988.1,0,该类型全部 singlet，不排除条件侧
+ctrl|NK cells,x 轴（CPM）,916,828937,905.0,0,该类型全部 singlet，不排除条件侧
+ctrl|B cells,x 轴（CPM）,1307,1630847,1247.8,0,该类型全部 singlet，不排除条件侧
+ctrl|Dendritic cells,x 轴（CPM）,203,690676,3402.3,0,该类型全部 singlet，不排除条件侧
+ctrl|Megakaryocytes,x 轴（CPM）,122,205612,1685.3,0,该类型全部 singlet，不排除条件侧
+ctrl|FCGR3A+ Monocytes,x 轴（CPM）,739,1838222,2487.4,0,该类型全部 singlet，不排除条件侧
+"obs|ctrl (CD14, disjoint)",y 轴（obs）,2529,5634862,2228.1,256,排除本文库 256 个条件侧细胞
+stim|CD14+ Monocytes,x 轴（CPM）,2590,6374141,2461.1,0,该类型全部 singlet，不排除条件侧
+stim|CD4 T cells,x 轴（CPM）,5195,6613779,1273.1,0,该类型全部 singlet，不排除条件侧
+stim|CD8 T cells,x 轴（CPM）,957,1041106,1087.9,0,该类型全部 singlet，不排除条件侧
+stim|NK cells,x 轴（CPM）,1067,1071317,1004.0,0,该类型全部 singlet，不排除条件侧
+stim|B cells,x 轴（CPM）,1256,1649925,1313.6,0,该类型全部 singlet，不排除条件侧
+stim|Dendritic cells,x 轴（CPM）,228,723162,3171.8,0,该类型全部 singlet，不排除条件侧
+stim|Megakaryocytes,x 轴（CPM）,134,213542,1593.6,0,该类型全部 singlet，不排除条件侧
+stim|FCGR3A+ Monocytes,x 轴（CPM）,852,2228640,2615.8,0,该类型全部 singlet，不排除条件侧
+"obs|stim (CD14, disjoint)",y 轴（obs）,2334,5762086,2468.8,256,排除本文库 256 个条件侧细胞
