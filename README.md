@@ -1,4 +1,12 @@
-# Evaluation code for "Cell-state conditioning predicts the expression response to an unseen stimulus but not stimulus-dependent genetic effects"
+# Evaluation code for "Cell-state conditioning in AlphaGenome 2 reproduces an unseen interferon response but shows no reliable stimulus-specific eQTL effects"
+
+Archived at **https://doi.org/10.5281/zenodo.24494903 (v1.1.0)**, together with the derived tables
+and the manuscript sources. This repository holds the code only.
+
+Licences: the code is MIT. Files in the archive that contain AlphaGenome outputs, or numbers
+computed from them, remain subject to the AlphaGenome Output Terms of Use
+(http://deepmind.google.com/science/alphagenome/output-terms); see the archive README for the
+file-by-file list.
 
 This repository contains the analysis scripts behind the manuscript. It does **not** contain
 the input data (several GB, third-party, different redistribution terms); the sources and the

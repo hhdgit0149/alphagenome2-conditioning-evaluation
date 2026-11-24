@@ -82,7 +82,7 @@ S1 = [
      "Not pre-specified; extended at the recomputation's request"),
     ("Withdrawal of the pseudobulk 'no gradient' claim (it is monotonic, 0.891 to 0.928)",
      "Corrected after audit", "-", "2026-11-15 early morning",
-     "The original number used the filtered 119 genes, which flattened the gradient"),
+     "The original number used the filtered 119 genes, which flattened the gradient. The result is no longer reported in the manuscript (removed on 22 November)"),
     ("Inventory of built-in conditions: 2,799 conditions, none experimentally perturbed",
      "Added after audit", "-", "2026-11-14 night", ""),
     ("Scale check for the dexamethasone condition (near-inert on the log2 scale; "
@@ -119,14 +119,98 @@ S1 = [
      "Corrected after audit", "-", "2026-11-15 evening",
      "Previously only biosample_name was searched"),
     ("obs|ctrl and obs|stim columns added to the marker table so log2 IFN response is reproducible",
-     "Corrected after audit", "-", "2026-11-15 evening", "Previously max|diff| 0.118"),
+     "Corrected after audit", "-", "2026-11-15 evening", "Previously max|diff| 0.118. The marker panel is no longer reported in the manuscript (removed on 22 November); the table stays in the deposit"),
     ("Wide keyword list re-checked by the recomputation (five groups: stimulus, "
      "glucocorticoid, hormone, state label, prostate)",
      "External recomputation", "recheck8.py", "2026-11-15 evening",
      "Both the narrow and the wide list appear in Table S3"),
+    ("Attrition denominator restored: 57.2%/59.7% to 71.5%/75.9%",
+     "Corrected after audit", "Figure 4; section on credible-set attrition",
+     "2026-11-22 20:30",
+     "The earlier correction had the direction wrong: 57.2%/59.7% divided by all label "
+     "rows, including shared ones, and counted untested rows (20/455) as excluded. "
+     "Over condition-specific rows the shares are 1,077/1,506 and 2,754/3,628"),
+    ("Main correlation printed as 0.615, not 0.616",
+     "Corrected after audit", "Abstract, Results, Figure 1 legend, supporting analyses",
+     "2026-11-22 20:30",
+     "Full-precision value 0.6154985596768819 rounds to 0.615; the earlier 0.616 came "
+     "from rounding twice, via the four-decimal 0.6155"),
+    ("Robustness analysis added: dropping the ten genes with the largest absolute measured log2 fold change",
+     "Added after audit", "Results", "2026-11-23 13:05",
+     "Window bootstrap, 35 windows, 2,000 draws, seed 0; rho = 0.563 (n = 109, 95% CI 0.419 to 0.674); computed in audit_numbers.py"),
+    ("Pseudocount sensitivity values",
+     "Added after audit", "Supporting analyses; Methods", "2026-11-23 13:05",
+     "Computed in audit_numbers.py from b_pred_disjoint_1115_115447.csv (stim, ctrl, cpm_stim, cpm_ctrl)"),
+    ("Gene count revised: the figure of 310 could not be traced to an archived file",
+     "Corrected after audit", "Results; Methods", "2026-11-23 10:40",
+     "Replaced by the reproducible funnel: genes returned in the 40 intervals, 246 with a measured "
+     "value, 119 passing the activity filter"),
+    ("Split-half null recomputed on the disjoint design (0 of 50, p = 0.0196, mean 0.027, SD 0.229)",
+     "Corrected after audit", "Supporting analyses; Methods", "2026-11-15 23:35",
+     "Recomputed by 53_noise_splits.py (seeds 1000+s, 50 splits) after the observed value moved from "
+     "0.486 to 0.615; the v2 preprint still reports the earlier 1 of 50, p = 0.039"),
+    ("Lymphoblastoid tracks: the GM prefix does not identify EBV-transformed lines",
+     "Corrected after audit", "Discussion; Table S3", "2026-11-22 22:45",
+     "GM23338 is an iPSC line derived from the fibroblast line GM23248, and GM23248 is a fibroblast "
+     "line; the earlier statement that all 246 GM-prefixed tracks were lymphoblastoid was wrong. "
+     "The text now counts only GM12878 with its parental lines GM12891 and GM12892 (131 tracks)"),
+    ("Genetically modified tracks: 694 CRISPR insertions plus 40 stable transfections",
+     "Added after audit", "Methods, keyword searches", "2026-11-22 22:45",
+     "All 734 are epitope-tag constructs; none is a knockdown or knockout"),
+    ("Activated-label counts revised to 29 first-generation tracks and 135 second-generation conditions",
+     "Corrected after audit", "Table 1; Table S3", "2026-11-22 22:40",
+     "The earlier 44 and 136 came from a script that was not archived and could not be reproduced. "
+     "The counts now reported come from the full returned tables with the lists given in Table S3"),
+    ("Note on the count of 30 corrected: it comes from all text fields with activated|activation, "
+     "not from a biosample_name-only search",
+     "Corrected after audit", "Table S3", "2026-11-22 22:40", "The earlier note was wrong"),
+    ("Supplement E describes itself as written before label construction; the file was hashed at 22:40, "
+     "after the labels were built at 22:27",
+     "Corrected after audit", "Methods, validation", "2026-11-22 22:40",
+     "Recorded, not resolved: the text of Supplement E was not edited"),
+    ("Activated-label counts: 44 first-generation tracks and 136 second-generation conditions",
+     "Corrected after audit", "Table 1; Table S3", "2026-11-22 20:45",
+     "The 30 recorded above is what a biosample_name-only search returned. The final counts "
+     "come from all text fields with the wide list; the narrow list returns 0 perturbed "
+     "conditions in either generation"),
+    ("Stimulated CD8 T measured overlap printed as 0.212, not 0.213",
+     "Corrected after audit", "Results; Figure 2 legend", "2026-11-22 20:30",
+     "Full-precision value 0.2124651037403786 rounds to 0.212, same double rounding"),
 ]
 
 s1 = pd.DataFrame(S1, columns=["Item", "Status", "Section or hash", "Date and time", "Note"])
+
+
+def plan_status(item, sec, when):
+    """Where each analysis stood relative to the versions of the plan."""
+    low = (item + " " + sec).lower()
+    if any(k in low for k in ("calibration", "expression-level", "condition vector",
+                              "cell counts", "reliability", "spearman")):
+        return "Analysed before plan v1"
+    if "prereg_v2" in low:
+        return "Specified in plan v2"
+    if "supplement a" in low:
+        return "Specified in plan v2 (supplement A)"
+    if any(k in low for k in ("supplement b", "supplement c", "supplement d", "supplement e")):
+        return "After plan v2"
+    if "prereg_fairfax" in low or "section 1" in low and "v1" in low:
+        return "Specified in plan v1"
+    return "After plan v2"
+
+
+# Statuses assigned per row: a correction inherits the status of the analysis it
+# corrects, rather than the date on which the correction was made.
+PLAN_STATUS = ['Specified in plan v2', 'Specified in plan v2', 'Specified in plan v2', 'Specified in plan v2 (supplement A)', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'Specified in plan v2', 'After plan v2', 'After plan v2', 'Run before plan v1', 'After plan v2', 'After plan v2', 'Run before plan v1', 'Run before plan v1', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'Run before plan v1', 'After plan v2', 'After plan v2', 'Run before plan v1', 'After plan v2', 'Run before plan v1', 'After plan v2', 'Run before plan v1', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2', 'After plan v2']
+
+# the version-1 main test, superseded in version 2 but still reported
+s1.loc[len(s1)] = ["Main test as specified in version 1 (mean difference of log ratios; "
+                   "permutation within study; 1,035 sites)",
+                   "Specified in plan v1", "PREREG_fairfax_main, section 1",
+                   "2026-11-13 23:19",
+                   "Replaced in version 2 by the rank sum; still reported (0.0383 by permutation)"]
+PLAN_STATUS = PLAN_STATUS + ["Specified in plan v1"]
+
+s1.insert(1, "Plan status", PLAN_STATUS)
 
 # ---- S2: cells and libraries -------------------------------------------------
 ROLE = {"x 轴（CPM）": "x axis (CPM)", "y 轴（obs）": "y axis (observed response)"}

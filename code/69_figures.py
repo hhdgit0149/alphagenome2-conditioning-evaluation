@@ -18,6 +18,17 @@ plt.rcParams.update({
     "xtick.major.width": 0.8, "ytick.major.width": 0.8,
     "pdf.fonttype": 42, "savefig.bbox": "tight", "savefig.dpi": 300,
 })
+def f3(x):
+    """Format to 3 decimals from a FULL-PRECISION value, rounding halves up.
+
+    This cannot repair double rounding: f3(0.6155) returns "0.616", because 0.6155
+    is already rounded. Always pass the value recomputed from the per-gene tables
+    (0.6154985596768819 -> "0.615"), never a 4-decimal summary.
+    """
+    assert abs(x) < 100, f"f3() expects a correlation-like value, got {x!r}"
+    return f"{int(abs(x) * 1000 + 0.5) / 1000 * (1 if x >= 0 else -1):.3f}"
+
+
 C = {"matched": "#111111", "stim": "#C0392B", "unstim": "#2C6FA6",
      "fit": "#999999", "hl": "#E67E22"}
 
@@ -77,14 +88,14 @@ def fig1():
                edgecolors="0.30", lw=0.9, zorder=4)
     ax.plot([mg.measured - 0.008, -0.045], [mg.model + 0.016, 0.545],
             color="0.45", lw=0.6, zorder=2)
-    ax.text(-0.245, 0.665, "megakaryocyte:\nlargest residual (0.15),\n134 cells (widest CI)",
+    ax.text(-0.245, 0.665, "megakaryocyte:\nlargest residual (0.152),\n134 cells, interval 0.43",
             fontsize=6.0, color="0.30", ha="left", va="top", linespacing=1.35)
 
     ax.set_xlabel("measured overlap with the IFN-$\\beta$ response (Spearman $\\rho$)",
                   fontsize=7.5)
     ax.set_ylabel("model overlap (Spearman $\\rho$)", fontsize=7.5)
     ax.tick_params(labelsize=7)
-    ax.set_xlim(-0.30, 1.10)
+    ax.set_xlim(-0.40, 1.10)
     ax.set_ylim(-0.52, 0.72)
     ax.legend(loc="lower right", fontsize=6.2, frameon=False, handletextpad=0.5,
               borderaxespad=0.2, labelspacing=0.35)
@@ -113,7 +124,7 @@ def fig2():
     ax.plot(lim, lim, "--", color="0.7", lw=0.8)
     ax.set_xlabel("measured log$_2$FC (IFN-β)")
     ax.set_ylabel("predicted log$_2$FC")
-    ax.text(0.03, 0.95, f"ρ = {r:.3f}\nn = {len(base)} genes", transform=ax.transAxes,
+    ax.text(0.03, 0.95, f"ρ = {f3(r)}\nn = {len(base)} genes", transform=ax.transAxes,
             va="top", fontsize=7)
     panel(ax, "a")
 
@@ -124,7 +135,7 @@ def fig2():
     ax.set_ylim(0, 0.8)
     ax.set_ylabel("ρ vs measured")
     for i, v in enumerate([r, r_ho]):
-        ax.text(i, v + 0.02, f"{v:.3f}", ha="center", fontsize=7)
+        ax.text(i, v + 0.02, f"{f3(v)}", ha="center", fontsize=7)
     panel(ax, "b")
 
     ax = axes[2]
@@ -161,13 +172,13 @@ def fig3():
     panel(ax, "a")
 
     ax = fig.add_subplot(gs[1])
-    ax.bar([0, 1], [0.0037, 0.1442], color=[C["stim"], "0.55"], width=0.55)
+    ax.bar([0, 1], [0.00373, 0.1442], color=[C["stim"], "0.55"], width=0.55)
     ax.axhline(0.05, color="0.4", ls=":", lw=0.8)
     ax.set_xticks([0, 1])
     ax.set_xticklabels(["denominator\n(resting)", "numerator\n(stimulated)"], fontsize=7)
     ax.set_ylabel("p (act vs rest)")
-    for i, v in enumerate([0.0037, 0.1442]):
-        ax.text(i, v + 0.006, f"{v:.4f}", ha="center", fontsize=7)
+    for i, v in enumerate([0.00373, 0.1442]):
+        ax.text(i, v + 0.006, ["0.00373", "0.144"][i], ha="center", fontsize=7)
     ax.set_ylim(0, 0.18)
     panel(ax, "b")
 
@@ -192,9 +203,10 @@ def fig3():
     ax.set_ylabel("|effect| (predicted log$_2$ ratio)")
     ax.set_yscale("log")
     h = [Line2D([], [], color="0.35", lw=0.8), Line2D([], [], color="0.35", lw=0.8, ls="")]
-    ax.legend([plt.Line2D([], [], color="0.35", lw=1.4),
-               plt.Line2D([], [], color="0.35", lw=1.4, alpha=0.4)],
-              ["numerator A", "denominator B"], fontsize=6, frameon=False, loc="lower left")
+    ax.set_ylim(0.004, 2.6)
+    for grp, xs in [("act_specific", pos["act_specific"]), ("rest_specific", pos["rest_specific"])]:
+        for lab, xpos in zip(["A", "B"], xs):
+            ax.text(xpos, 0.0045, lab, ha="center", va="bottom", fontsize=6.5)
     panel(ax, "c")
     fig.tight_layout()
     fig.savefig("fig3_site_layer.png", dpi=600)
@@ -205,8 +217,8 @@ def fig3():
 # ---------------------------------------------------------------- Figure 4
 def fig4():
     rows = [
-        ("Fairfax", {"|z$_{other}$| ≥ 2": 1077, "untested in the\nother condition": 18 + 2, "direction": 4}, 825),
-        ("Quach", {"|z$_{other}$| ≥ 2": 2754, "untested in the\nother condition": 421 + 34, "direction": 0}, 2170),
+        ("Fairfax", {"|z$_{other}$| ≥ 2": 1077, "untested in the\nother condition": 18 + 2}, 146 + 263),
+        ("Quach", {"|z$_{other}$| ≥ 2": 2754, "untested in the\nother condition": 421 + 34}, 219 + 200),
     ]
     fig, ax = plt.subplots(figsize=(3.4, 2.6))
     for i, (name, cats, kept) in enumerate(rows):
@@ -214,8 +226,7 @@ def fig4():
         bottom = 0
         for lab, v in cats.items():
             ax.bar(i, v / total * 100, bottom=bottom, width=0.55,
-                   color={"|z$_{other}$| ≥ 2": "#C0392B", "untested in the\nother condition": "#E67E22",
-                          "direction": "0.65"}[lab], label=lab if i == 0 else None)
+                   color={"|z$_{other}$| ≥ 2": "#C0392B", "untested in the\nother condition": "#E67E22"}[lab], label=lab if i == 0 else None)
             bottom += v / total * 100
         ax.bar(i, kept / total * 100, bottom=bottom, width=0.55, color="#2C6FA6",
                label="retained" if i == 0 else None)
@@ -233,21 +244,48 @@ def fig4():
 
 
 # ---------------------------------------------------------------- Figure S1
+def main_rho():
+    """Full-precision main correlation, the same input and convention as audit_numbers.py."""
+    p = pd.read_csv(f"{D}/b_pred_disjoint_1115_115447.csv")
+    b = p[(p[["ctrl", "stim"]].max(axis=1) > 1) & p.obs.notna()].copy()
+    pr = np.log2((b.stim + 1) / (b.ctrl + 1))
+    return float(stats.spearmanr(pr, b.obs).correlation)
+
+
+def calib_mag():
+    """median |predicted log2 fold change| for the seven unstimulated conditions,
+    computed on the same 119 analysis genes and from the same predictions that
+    give the model values plotted in Figure 2."""
+    a = pd.read_csv(f"{D}/calib_mid_pred_1115_121815.csv")
+    b = pd.read_csv(f"{D}/calib_mid_pred_1115_130035.csv")
+    m = a.merge(b[["ensg", "CD8 T cells", "B cells", "Megakaryocytes"]], on="ensg", how="outer")
+    pr = pd.read_csv(f"{D}/b_pred_disjoint_1115_115447.csv")
+    keep = pr[(pr[["ctrl", "stim"]].max(axis=1) > 1) & pr.obs.notna()].ensg
+    m = m[m.ensg.isin(set(keep))]
+    out = {}
+    for c in ["CD4 T cells", "CD8 T cells", "NK cells", "B cells",
+              "Dendritic cells", "Megakaryocytes", "FCGR3A+ Monocytes"]:
+        lr = np.log2((m[c].values + 1) / (m["cd14ctrl"].values + 1))
+        out[c] = float(np.nanmedian(np.abs(lr)))
+    return out
+
+
 def figS1():
     th = pd.read_csv(f"{D}/depth_thinning.csv").rho_shallow.values
     fig, ax = plt.subplots(figsize=(3.2, 2.6))
-    vals = [0.486, th.mean(), 0.6155]
+    RHO = main_rho()
+    vals = [0.486, th.mean(), RHO]
     errs = [0, th.std(ddof=1), 0]
     ax.bar(range(3), vals, yerr=errs, capsize=3, width=0.55,
            color=["0.65", "#E67E22", "#2C6FA6"],
            error_kw=dict(lw=0.8, ecolor="0.3"))
     ax.set_xticks(range(3))
-    ax.set_xticklabels(["circular,\nshallow", "disjoint,\nshallow", "disjoint,\nfull depth"],
+    ax.set_xticklabels(["shared cells,\nshallow", "disjoint,\nshallow", "disjoint,\nfull depth"],
                        fontsize=7)
     ax.set_ylabel("ρ (prediction vs measured)")
     ax.set_ylim(0, 0.75)
     for i, v in enumerate(vals):
-        lab = f"{v:.3f}" if i != 1 else f"{v:.3f}\n(SD {errs[i]:.3f})"
+        lab = f3(v) if i != 1 else f"{f3(v)}\n(SD {errs[i]:.3f})"
         ax.text(i, max(v + errs[i] + 0.02, 0.52 if i == 1 else 0),
                 lab, ha="center", fontsize=7, va="bottom")
     fig.savefig("figS1_depth.png", dpi=600)
@@ -259,15 +297,17 @@ def figS1():
 def figS2():
     ns = pd.read_csv(f"{D}/noise_splits_rho_newobs.csv").rho.values
     nul = pd.read_csv(f"{D}/null_all_disjoint.csv")
-    OBS = 0.6155
+    OBS = main_rho()
+    _p = pd.read_csv(f"{D}/b_pred_disjoint_1115_115447.csv")
+    _pp = _p[(_p[["ctrl", "stim"]].max(axis=1) > 1) & _p.obs.notna()]
     k = int((ns >= OBS).sum())
     pval = (1 + k) / (1 + len(ns))
     fig, axes = plt.subplots(1, 2, figsize=(6.4, 2.5))
     ax = axes[0]
     ax.hist(ns, bins=14, color="0.7", edgecolor="white", lw=0.5, range=(-0.45, 0.65))
     ax.axvline(OBS, color=C["stim"], lw=1.2, zorder=3)
-    ax.annotate(f"observed 0.616\n({k}/{len(ns)} draws reach it;\n"
-                f"one-sided p = {pval:.3f})",
+    ax.annotate(f"observed {f3(OBS)}\n({k}/{len(ns)} draws reach it;\n"
+                f"one-sided p = {pval:.4f})",
                 xy=(OBS, ax.get_ylim()[1] * 0.55), xytext=(0.30, 0.62),
                 textcoords="axes fraction", color=C["stim"], fontsize=6.0,
                 ha="left", va="center", linespacing=1.35,
@@ -281,22 +321,36 @@ def figS2():
     ax = axes[1]
     EN = {"CD4 T": "CD4 T", "CD8 T": "CD8 T", "NK": "NK", "B 细胞": "B",
           "树突细胞": "dendritic", "巨核细胞": "megakaryocyte", "FCGR3A+ 单核": "FCGR3A+ mono"}
+    # x is the model value of Figure 2: the correlation between this condition's
+    # prediction and the measured response, on the same 119 genes throughout
+    cal = pd.read_csv(f"{D}/calibration_final.csv")
+    cal = cal[cal.kind == "unstim"].set_index("cond")
+    MAP = {"CD4 T": "CD4 T cells", "CD8 T": "CD8 T cells", "NK": "NK cells",
+           "B 细胞": "B cells", "树突细胞": "Dendritic cells",
+           "巨核细胞": "Megakaryocytes", "FCGR3A+ 单核": "FCGR3A+ Monocytes"}
+    MAG = calib_mag()
+    nul["mv"] = [cal.loc[MAP[k], "model"] if k in MAP else OBS for k in nul.cond]
+    nul["mag"] = [MAG[MAP[k]] if k in MAP else float(np.median(np.abs(np.log2((_pp.stim + 1) / (_pp.ctrl + 1))))) for k in nul.cond]
     nul = nul.assign(cond=nul.cond.map(lambda v: EN.get(v, v)))
-    d = nul[nul.tag != "real"].sort_values("rho")
-    ax.scatter(d.rho, d.mag, s=22, c="#E67E22", lw=0)
-    ax.scatter(nul[nul.tag == "real"].rho, nul[nul.tag == "real"].mag, s=55,
+    d = nul[nul.tag != "real"].sort_values("mv")
+    ax.scatter(d.mv, d.mag, s=22, c="#E67E22", lw=0)
+    ax.scatter(nul[nul.tag == "real"].mv, nul[nul.tag == "real"].mag, s=55,
                marker="*", c=C["matched"])
-    OFF = {"CD4 T": (-16, 2), "CD8 T": (5, -8), "NK": (2, 6), "B": (4, 4),
-           "dendritic": (5, 0), "megakaryocyte": (5, 0), "FCGR3A+ mono": (-6, 7)}
+    ax.set_xlim(-0.20, 0.70)
+    ax.set_ylim(0.15, 0.98)
+    OFF = {"CD4 T": (-14, -12), "CD8 T": (3, -17), "NK": (-4, 12), "B": (11, 7),
+           "dendritic": (9, -6), "megakaryocyte": (8, 8), "FCGR3A+ mono": (9, 5)}
     for _, r in d.iterrows():
         dx, dy = OFF.get(r.cond, (4, 3))
         ha = "right" if dx < 0 else "left"
-        ax.annotate(r.cond if len(r.cond) < 14 else r.cond[:12], (r.rho, r.mag),
+        lead = dict(arrowstyle="-", color="0.55", lw=0.4,
+                    shrinkA=1, shrinkB=2) if r.cond in ("CD4 T", "NK", "B") else None
+        ax.annotate(r.cond if len(r.cond) < 14 else r.cond[:12], (r.mv, r.mag),
                     textcoords="offset points", xytext=(dx, dy), fontsize=5.5,
-                    color="0.35", ha=ha)
-    ax.annotate("matched", (nul[nul.tag == "real"].rho.iloc[0],
+                    color="0.35", ha=ha, arrowprops=lead)
+    ax.annotate("matched", (nul[nul.tag == "real"].mv.iloc[0],
                             nul[nul.tag == "real"].mag.iloc[0]),
-                textcoords="offset points", xytext=(-30, 6), fontsize=6.5)
+                textcoords="offset points", xytext=(-8, -13), fontsize=6.5, ha="center")
     ax.set_xlabel("ρ with measured IFN-β response")
     ax.set_ylabel("median |predicted log$_2$FC|")
     ax.axvline(0, color="0.85", lw=0.6)

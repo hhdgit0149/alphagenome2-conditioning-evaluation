@@ -12,6 +12,7 @@ The AlphaGenome 2 report is not indexed in Europe PMC; its author list is transc
 from page 1 of the PDF at the URL below (accessed 2026-11-16).
 """
 import json
+import os
 
 SNAP = "_authors_epmc.json"
 
@@ -177,6 +178,14 @@ def main():
         lines.append(emit(e)); lines.append("")
 
     lines.append(emit(AG2)); lines.append("")
+
+    # entries added by hand after the Europe PMC snapshot was taken (24 November
+    # 2026); they are appended verbatim so a regeneration cannot drop them
+    extra = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_extra_entries.bib")
+    if os.path.exists(extra):
+        with open(extra, encoding="utf-8") as fh:
+            lines.append(fh.read().rstrip())
+        print(f"appended {extra}")
 
     open("references.bib", "w", encoding="utf-8").write("\n".join(lines))
     n = len(order) + 1

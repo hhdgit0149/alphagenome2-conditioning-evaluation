@@ -12,6 +12,7 @@ fractions, so the output can be built with:
 
 Cells wrap because the separator row carries relative dash widths.
 """
+import os
 import re
 
 import pandas as pd
@@ -61,9 +62,11 @@ def main():
     s = re.sub(r"\[\[TABLE:(.+?)\]\]", repl, s)
 
     def fig(m):
-        path, label, cap = m.group(1).split("|", 2)
+        parts = m.group(1).split("|")
+        path, label, cap = parts[0], parts[1], parts[2]
+        width = parts[3].strip() if len(parts) > 3 else "100%"
         return (f"![{label.strip()}. {cap.strip()}]({path.strip()})"
-                "{width=100%}\n")
+                f"{{width={width}}}\n")
 
     s = re.sub(r"\[\[FIG:(.+?)\]\]", fig, s)
     s = s.replace("[[PAGEBREAK]]", "\\newpage")
