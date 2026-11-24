@@ -71,5 +71,7 @@ restrictions beyond the terms of the original sources.
 
 ## Licence
 
-MIT — see `LICENSE`. The archived tables under `tables/` and the manuscript text are
-additionally available under CC-BY-4.0.
+MIT — see `LICENSE`. The manuscript text in the archive is additionally available under CC BY 4.0.
+Tables and files in the archive that contain AlphaGenome outputs, or numbers computed from them,
+remain subject to the AlphaGenome Output Terms of Use; the archive README lists which file is
+under which licence.
